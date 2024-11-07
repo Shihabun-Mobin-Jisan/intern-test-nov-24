@@ -14,10 +14,14 @@
         <h2 class="text-center mb-4">Upload an Image</h2>
 
         <!-- Image Upload Form -->
-        <form action="" method="POST" enctype="multipart/form-data" class="mb-5">
+        <form action="{{ route('upload.store') }}" method="POST" enctype="multipart/form-data" class="mb-5">
+            @csrf
             <div class="row g-2 align-items-center">
                 <div class="col-md-10">
                     <input type="file" name="image" class="form-control" required>
+                    @error('image')
+                        <div class="text-danger mt-2">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-2">
                     <button type="submit" class="btn btn-primary w-100">Upload Image</button>
@@ -34,11 +38,21 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Example row; replace with dynamic data -->
-                <tr>
-                    <th scope="row">1</th>
-                    <td><img src="https://picsum.photos/200" alt="Image" class="img-thumbnail" width="100"></td>
-                </tr>
+                @foreach ($images as $index => $image)
+                    <!-- Image Preview -->
+                    <tr>
+                        <th scope="row">{{ $index + 1 }}</th>
+                        <td>
+                            @php
+                                // Check if the file is a valid URL or a local file
+                                $imageSrc = filter_var($image->filepath, FILTER_VALIDATE_URL)
+                                    ? $image->filepath
+                                    : asset('storage/' . $image->filepath);
+                            @endphp
+                            <img src="{{ $imageSrc }}" alt="Image" class="img-thumbnail" width="100">
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
