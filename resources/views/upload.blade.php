@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class="container mt-5">
+    <!-- <div class="container mt-5">
         <h2 class="text-center mb-4">Upload an Image</h2>
 
         <!-- Image Upload Form -->
@@ -45,6 +45,28 @@
 
     <!-- Bootstrap 5 JS CDN (for any JavaScript functionality, e.g., modals) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+</body> -->
+
+
+
+<form action="{{ route('image.upload') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="image">
+        <button type="submit">Upload</button>
+    </form>
+
+     @if (session('success'))
+        <div>
+            {{ session('success') }}
+            <br>
+            <img src="{{ asset('images/' . session('image')) }}" width="200" />
+        </div>
+    @endif
+    <form action="{{ route('image.upload') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="image">
+        <button type="submit">Upload</button>
+    </form>
+
 
 </html>
